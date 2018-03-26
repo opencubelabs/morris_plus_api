@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>EMS Data | Home</title>
+
+	<link rel="stylesheet" href="css/morris.css">
+  	<script src="js/jquery.min.js"></script>
+  	<script src="js/raphael-min.js"></script>
+  	<script src="js/morris.min.js"></script>
+
+
+	<script type="text/javascript">
+	    $(document).ready(function(){
+	      $.get('http://ocl-data-server.herokuapp.com/read/100', function(data){
+				//console.log(data.result.length)
+				var lm35_graph = [];
+				var ldr_graph = [];
+				for(var i=0; i<10; i++){
+					lm35_graph.push({'time_stamp': data.result[i].time_stamp, 'value': data.result[i].data.lm35});
+					ldr_graph.push({'time_stamp': data.result[i].time_stamp, 'value': data.result[i].data.ldr});
+
+				}
+
+				new Morris.Line({ element: 'lm35', data: lm35_graph, xkey: 'time_stamp', ykeys: ['value'], labels: ['Value'] });
+				new Morris.Line({ element: 'ldr', data: ldr_graph, xkey: 'time_stamp', ykeys: ['value'], labels: ['Value'] });
+
+		  })
+
+	      
+	      
+	    })
+	    
+	  </script>
+</head>
+<body>
+	<div id="lm35" style="height: 250px;"></div>
+	<div id="ldr" style="height: 250px;"></div>
+
+</body>
+</html>
